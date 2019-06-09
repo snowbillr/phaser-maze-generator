@@ -19,10 +19,6 @@ export class Cell {
     this.rightWall.visible = true;
   }
 
-  setBackground(hexCode) {
-    this.rectangle.fillColor = hexCode;
-  }
-
   removeTopWall() {
     this.topWall.visible = false;
   }
