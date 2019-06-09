@@ -66,4 +66,8 @@ export class RecursiveBacktracker {
       }
     }
   }
+
+  reset() {
+    this.grid.forEach(cell => delete cell.visited);
+  }
 }

@@ -23,8 +23,16 @@ export class Grid {
     }
   }
 
+  reset() {
+    this.cells.forEach(row => row.forEach(cell => cell.reset()));
+  }
+
   get(row, col) {
     return this.cells[row][col];
+  }
+
+  forEach(fn) {
+    return this.cells.forEach(row => row.forEach(fn));
   }
 
   some(fn) {

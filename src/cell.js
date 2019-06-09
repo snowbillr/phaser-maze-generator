@@ -12,6 +12,13 @@ export class Cell {
     this.rightWall = scene.add.rectangle(x + size / 2, y, this.borderWidth, size, 0x000000);
   }
 
+  reset() {
+    this.topWall.visible = true;
+    this.bottomWall.visible = true;
+    this.leftWall.visible = true;
+    this.rightWall.visible = true;
+  }
+
   setBackground(hexCode) {
     this.rectangle.fillColor = hexCode;
   }
