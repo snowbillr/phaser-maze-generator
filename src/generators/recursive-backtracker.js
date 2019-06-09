@@ -2,6 +2,18 @@ export class RecursiveBacktracker {
   constructor(scene, grid) {
     this.scene = scene;
     this.grid = grid;
+
+    this.reset();
+  }
+
+  reset() {
+    this.currentRow = 0;
+    this.currentCol = 0;
+    this.cellStack = [];
+
+    this.destroyedWallCount = 0;
+
+    this.grid.forEach(cell => delete cell.visited);
   }
 
   canStep() {
@@ -9,11 +21,7 @@ export class RecursiveBacktracker {
   }
 
   generate() {
-    this.currentRow = 0;
-    this.currentCol = 0;
-    this.cellStack = [];
-
-    this.destroyedWallCount = 0;
+    this.reset();
 
     this.grid.get(this.currentRow, this.currentCol).visited = true;
 
@@ -36,11 +44,11 @@ export class RecursiveBacktracker {
 
       this.currentRow = neighbor.row;
       this.currentCol = neighbor.col;
-      this.currentCol = neighbor.col;
 
       neighbor.visited = true;
     } else if (this.cellStack.length) {
       const poppedCell = this.cellStack.pop();
+
       this.currentRow = poppedCell.row;
       this.currentCol = poppedCell.col;
     }
@@ -80,9 +88,5 @@ export class RecursiveBacktracker {
     }
 
     this.destroyedWallCount += 1;
-  }
-
-  reset() {
-    this.grid.forEach(cell => delete cell.visited);
   }
 }
