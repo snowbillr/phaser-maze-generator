@@ -5,8 +5,8 @@ export class MazeScene extends Phaser.Scene {
   create() {
     this.cameras.main.setBackgroundColor(0xcacaca);
 
-    this.ROWS = 8;
-    this.COLS = 8;
+    this.ROWS = 10;
+    this.COLS = 10;
     const size = 40;
 
     this.grid = new Grid(this, this.ROWS, this.COLS, size);

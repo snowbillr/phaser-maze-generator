@@ -4,20 +4,23 @@ import { Cell } from './cell';
 
 export class Grid {
   constructor(scene, rows, cols, cellSize) {
+    this.width = rows;
+    this.height = cols;
+
     this.cells = [];
 
     for (let r = 0; r < rows; r++) {
       this.cells[r] = [];
       for (let c = 0; c < cols; c++) {
-        this.cells[r][c] = new Cell(scene, c * cellSize + 100, r * cellSize + 100, cellSize);
+        const x = (c * cellSize) + (cellSize / 2);
+        const y = (r * cellSize) + (cellSize / 2);
+
+        this.cells[r][c] = new Cell(scene, x, y, cellSize);
         this.cells[r][c].row = r;
         this.cells[r][c].col = c;
         this.cells[r][c].visited = false;
       }
     }
-
-    this.height = this.cells.length;
-    this.width = this.cells[0].length;
   }
 
   get(row, col) {
