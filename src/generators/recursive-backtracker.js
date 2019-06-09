@@ -23,10 +23,6 @@ export class RecursiveBacktracker {
     this.scheduler.removeAllEvents();
   }
 
-  canStep() {
-    return this.grid.some(cell => !cell.visited);
-  }
-
   generate() {
     this.reset();
 
@@ -36,6 +32,12 @@ export class RecursiveBacktracker {
     this.grid.get(this.grid.height - 1, this.grid.width - 1).removeBottomWall();
 
     this.step();
+  }
+
+  // private
+
+  canStep() {
+    return this.grid.some(cell => !cell.visited);
   }
 
   step() {
