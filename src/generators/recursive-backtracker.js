@@ -24,8 +24,6 @@ export class RecursiveBacktracker {
   }
 
   step() {
-    const TIME_STEP = 50;
-
     const cell = this.grid.get(this.currentRow, this.currentCol);
     const neighbors = this.grid.getNeighbors(this.currentRow, this.currentCol);
     const unvisitedNeighbors = neighbors.filter(neighbor => !neighbor.visited);
@@ -34,37 +32,10 @@ export class RecursiveBacktracker {
       const neighbor = Phaser.Math.RND.pick(unvisitedNeighbors);
       this.cellStack.push(cell);
 
-      if (cell.row == neighbor.row) {
-        if (neighbor.col < cell.col) { // left
-          this.scene.time.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
-            neighbor.removeRightWall();
-            cell.removeLeftWall();
-          });
-          this.destroyedWallCount += 1;
-        } else { // right
-          this.scene.time.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
-            neighbor.removeLeftWall();
-            cell.removeRightWall();
-          });
-          this.destroyedWallCount += 1;
-        }
-      } else {
-        if (neighbor.row < cell.row) { // above
-          this.scene.time.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
-            neighbor.removeBottomWall();
-            cell.removeTopWall();
-          });
-          this.destroyedWallCount += 1;
-        } else { // below
-          this.scene.time.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
-            neighbor.removeTopWall();
-            cell.removeBottomWall();
-          });
-          this.destroyedWallCount += 1;
-        }
-      }
+      this.scheduleNextWallRemoval(cell, neighbor);
 
       this.currentRow = neighbor.row;
+      this.currentCol = neighbor.col;
       this.currentCol = neighbor.col;
 
       neighbor.visited = true;
@@ -79,6 +50,37 @@ export class RecursiveBacktracker {
     }
   }
 
+  scheduleNextWallRemoval(cell1, cell2) {
+    const TIME_STEP = 50;
+
+    if (cell1.row == cell2.row) {
+      if (cell2.col < cell1.col) { // left
+        this.scene.time.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
+          cell2.removeRightWall();
+          cell1.removeLeftWall();
+        });
+      } else { // right
+        this.scene.time.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
+          cell2.removeLeftWall();
+          cell1.removeRightWall();
+        });
+      }
+    } else {
+      if (cell2.row < cell1.row) { // above
+        this.scene.time.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
+          cell2.removeBottomWall();
+          cell1.removeTopWall();
+        });
+      } else { // below
+        this.scene.time.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
+          cell2.removeTopWall();
+          cell1.removeBottomWall();
+        });
+      }
+    }
+
+    this.destroyedWallCount += 1;
+  }
 
   reset() {
     this.grid.forEach(cell => delete cell.visited);
