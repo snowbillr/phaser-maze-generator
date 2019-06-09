@@ -1,11 +1,11 @@
 import 'phaser';
 
-import { SimpleScene } from './scenes/simple-scene';
+import { MazeScene } from './scenes/maze-scene';
 
 const gameConfig = {
-  width: 680,
-  height: 400,
-  scene: SimpleScene
+  width: 500,
+  height: 500,
+  scene: MazeScene
 };
 
 new Phaser.Game(gameConfig);
