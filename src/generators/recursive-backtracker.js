@@ -1,7 +1,12 @@
+import 'phaser';
+
 export class RecursiveBacktracker {
   constructor(scene, grid) {
     this.scene = scene;
     this.grid = grid;
+
+    this.scheduler = new Phaser.Time.Clock(scene);
+    this.scheduler.start();
 
     this.reset();
   }
@@ -14,6 +19,8 @@ export class RecursiveBacktracker {
     this.destroyedWallCount = 0;
 
     this.grid.forEach(cell => delete cell.visited);
+
+    this.scheduler.removeAllEvents();
   }
 
   canStep() {
@@ -63,24 +70,24 @@ export class RecursiveBacktracker {
 
     if (cell1.row == cell2.row) {
       if (cell2.col < cell1.col) { // left
-        this.scene.time.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
+        this.scheduler.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
           cell2.removeRightWall();
           cell1.removeLeftWall();
         });
       } else { // right
-        this.scene.time.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
+        this.scheduler.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
           cell2.removeLeftWall();
           cell1.removeRightWall();
         });
       }
     } else {
       if (cell2.row < cell1.row) { // above
-        this.scene.time.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
+        this.scheduler.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
           cell2.removeBottomWall();
           cell1.removeTopWall();
         });
       } else { // below
-        this.scene.time.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
+        this.scheduler.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
           cell2.removeTopWall();
           cell1.removeBottomWall();
         });
