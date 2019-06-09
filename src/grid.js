@@ -1,10 +1,23 @@
 import 'phaser';
 
+import { Cell } from './cell';
+
 export class Grid {
-  constructor(cells) {
-    this.cells = cells;
-    this.height = cells.length;
-    this.width = cells[0].length;
+  constructor(scene, rows, cols, cellSize) {
+    this.cells = [];
+
+    for (let r = 0; r < rows; r++) {
+      this.cells[r] = [];
+      for (let c = 0; c < cols; c++) {
+        this.cells[r][c] = new Cell(scene, c * cellSize + 100, r * cellSize + 100, cellSize);
+        this.cells[r][c].row = r;
+        this.cells[r][c].col = c;
+        this.cells[r][c].visited = false;
+      }
+    }
+
+    this.height = this.cells.length;
+    this.width = this.cells[0].length;
   }
 
   get(row, col) {
@@ -16,12 +29,6 @@ export class Grid {
   }
 
   getNeighbors(row, col) {
-    // return [
-      // (row > 0 && row < this.height) && this.cells[row - 1][col],
-      // (row >= 0 && row < this.height - 1) && this.cells[row + 1][col],
-      // (col > 0 && col < this.width) && this.cells[row][col - 1],
-      // (col >+ 0 && col < this.width - 1) && this.cells[row][col + 1],
-    // ].filter(c => c);
     const cell = this.get(row, col);
     const above = Phaser.Math.Clamp(row - 1, 0, this.height - 1);
     const below = Phaser.Math.Clamp(row + 1, 0, this.height - 1);

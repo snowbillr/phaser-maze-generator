@@ -1,5 +1,4 @@
 import 'phaser'
-import { Cell } from '../cell';
 import { Grid } from '../grid';
 
 export class MazeScene extends Phaser.Scene {
@@ -10,17 +9,7 @@ export class MazeScene extends Phaser.Scene {
     this.COLS = 8;
     const size = 40;
 
-    const cells = [];
-    for (let r = 0; r < this.ROWS; r++) {
-      cells[r] = [];
-      for (let c = 0; c < this.COLS; c++) {
-        cells[r][c] = new Cell(this, c * size + 100, r * size + 100, size);
-        cells[r][c].row = r;
-        cells[r][c].col = c;
-        cells[r][c].visited = false;
-      }
-    }
-    this.grid = new Grid(cells);
+    this.grid = new Grid(this, this.ROWS, this.COLS, size);
 
     this.generateMaze();
   }
