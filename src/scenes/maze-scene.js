@@ -1,22 +1,24 @@
 import 'phaser'
-import { Grid } from '../grid';
+// import { Grid } from '../grid';
 import { RecursiveBacktracker } from '../generators/recursive-backtracker';
+import { GridView } from '../entities/grid-view';
+import { Grid } from '../models/grid';
 
 export class MazeScene extends Phaser.Scene {
   create() {
     this.cameras.main.setBackgroundColor(0xcacaca);
 
-    const rows = 10;
-    const cols = 10;
-    const cellSize = 40;
+    const rows = 8;
+    const cols = 8;
 
-    const grid = new Grid(this, rows, cols, cellSize);
-    const generator = new RecursiveBacktracker(this, grid);
+    const grid = new Grid(rows, cols);
+    const gridView = new GridView(this, grid, 250, 250);
+
+    const generator = new RecursiveBacktracker(this, grid, gridView);
 
     this.add.text(50, 450, 'generate')
       .setInteractive()
       .on('pointerdown', () => {
-        grid.reset();
         generator.reset();
 
         generator.generate();
@@ -25,7 +27,6 @@ export class MazeScene extends Phaser.Scene {
     this.add.text(150, 450, 'reset')
       .setInteractive()
       .on('pointerdown', () => {
-        grid.reset();
         generator.reset();
       });
   }
