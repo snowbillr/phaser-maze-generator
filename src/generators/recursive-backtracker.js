@@ -30,9 +30,6 @@ export class RecursiveBacktracker {
 
     this.grid.get(this.currentRow, this.currentCol).visited = true;
 
-    // this.grid.get(this.currentRow, this.currentCol).removeTopWall();
-    // this.grid.get(this.grid.height - 1, this.grid.width - 1).removeBottomWall();
-
     this.step();
   }
 
@@ -75,28 +72,20 @@ export class RecursiveBacktracker {
     if (cell1.row == cell2.row) {
       if (cell2.col < cell1.col) { // left
         this.scheduler.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
-          // cell2.removeRightWall();
-          // cell1.removeLeftWall();
           this.gridView.destroyWall(cell1.walls.left);
         });
       } else { // right
         this.scheduler.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
-          // cell2.removeLeftWall();
-          // cell1.removeRightWall();
           this.gridView.destroyWall(cell1.walls.right);
         });
       }
     } else {
       if (cell2.row < cell1.row) { // above
         this.scheduler.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
-          // cell2.removeBottomWall();
-          // cell1.removeTopWall();
           this.gridView.destroyWall(cell1.walls.above);
         });
       } else { // below
         this.scheduler.delayedCall(TIME_STEP * this.destroyedWallCount, () => {
-          // cell2.removeTopWall();
-          // cell1.removeBottomWall();
           this.gridView.destroyWall(cell1.walls.below);
         });
       }
