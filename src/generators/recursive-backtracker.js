@@ -13,8 +13,8 @@ export class RecursiveBacktracker {
   }
 
   reset() {
-    this.currentRow = 0;
-    this.currentCol = 0;
+    this.currentRow = Phaser.Math.RND.between(0, this.grid.rows - 1);
+    this.currentCol = Phaser.Math.RND.between(0, this.grid.cols - 1);
     this.cellStack = [];
 
     this.destroyedWallCount = 0;
