@@ -2,6 +2,7 @@ import 'phaser'
 import { RecursiveBacktracker } from '../generators/recursive-backtracker';
 import { GridView } from '../entities/grid-view';
 import { Grid } from '../models/grid';
+import { RandomizedKruskal } from '../generators/randomized-kruskal';
 
 export class MazeScene extends Phaser.Scene {
   create() {
@@ -13,7 +14,8 @@ export class MazeScene extends Phaser.Scene {
     const grid = new Grid(rows, cols);
     const gridView = new GridView(this, grid, 250, 250);
 
-    const generator = new RecursiveBacktracker(this, grid, gridView);
+    // const generator = new RecursiveBacktracker(this, grid, gridView);
+    const generator = new RandomizedKruskal(this, grid, gridView);
 
     this.add.text(50, 450, 'generate')
       .setInteractive()
