@@ -12,6 +12,8 @@ export class GridView {
     this.y = y;
     this.gridWidth = (this.grid.cols * CELL_SIZE) /*+ ((this.grid.cols + 1) * WALL_THICKNESS)*/;
     this.gridHeight = (this.grid.rows * CELL_SIZE) /*+ ((this.grid.rows + 1) * WALL_THICKNESS)*/;
+    const centerX = this.x - this.gridWidth / 2;
+    const centerY = this.y - this.gridHeight / 2;
 
     // key: `${row}${col}`
     this.cellViews = {};
@@ -23,7 +25,7 @@ export class GridView {
     this._buildGrid();
     this._outlineGrid();
 
-    this.container = scene.add.container(50, 50, [...Object.values(this.cellViews), ...Object.values(this.wallViews), ...this.outlineViews]);
+    this.container = scene.add.container(centerX, centerY, [...Object.values(this.cellViews), ...Object.values(this.wallViews), ...this.outlineViews]);
   }
 
   reset() {
