@@ -20,7 +20,6 @@ export class RecursiveBacktracker {
     this.destroyedWallCount = 0;
 
     this.grid.forEachCell(cell => delete cell.visited);
-    this.gridView.reset();
 
     this.scheduler.removeAllEvents();
   }

@@ -19,6 +19,7 @@ export class MazeScene extends Phaser.Scene {
       .setInteractive()
       .on('pointerdown', () => {
         generator.reset();
+        gridView.reset();
 
         generator.generate();
       });
@@ -27,6 +28,7 @@ export class MazeScene extends Phaser.Scene {
       .setInteractive()
       .on('pointerdown', () => {
         generator.reset();
+        gridView.reset();
       });
 
     this.add.text(250, 450, 'randomize size')

@@ -34,6 +34,7 @@ export class GridView {
 
   reset() {
     Object.values(this.wallViews).forEach(wallView => wallView.alpha = 1);
+    this.scene.tweens.killAll();
   }
 
   destroyWall(wall) {
