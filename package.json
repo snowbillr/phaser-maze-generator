@@ -19,6 +19,7 @@
     "phaser": "^3.0.0"
   },
   "scripts": {
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server --config webpack.config.dev.js",
+    "gh-pages": "webpack --config webpack.config.gh-pages.js"
   }
 }
