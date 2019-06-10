@@ -24,7 +24,7 @@ export class GridView {
   }
 
   reset() {
-    Object.values(this.wallViews).forEach(wallView => wallView.fillColor = 0x000000);
+    Object.values(this.wallViews).forEach(wallView => wallView.alpha = 1);
   }
 
   refresh() {
@@ -44,7 +44,14 @@ export class GridView {
   }
 
   destroyWall(wall) {
-    this.wallViews[`${wall.cell1.row}${wall.cell1.col},${wall.cell2.row}${wall.cell2.col}`].fillColor = 0xFFFFFF;
+    const wallView = this.wallViews[`${wall.cell1.row}${wall.cell1.col},${wall.cell2.row}${wall.cell2.col}`];
+    this.scene.tweens.add({
+      targets: wallView,
+      props: {
+        alpha: 0,
+      },
+      duration: 200
+    });
   }
 
   _buildCellViews() {
