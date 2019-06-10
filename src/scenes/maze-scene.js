@@ -60,7 +60,7 @@ export class MazeScene extends Phaser.Scene {
         const rows = Phaser.Math.RND.between(2, 10);
         const cols = Phaser.Math.RND.between(2, 10);
         grid.setSize(rows, cols);
-        gridView.refresh();
+        this.gridView.refresh();
       });
 
     this._updateActiveGeneratorName();
