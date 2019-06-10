@@ -3,6 +3,10 @@ import { Wall } from './wall';
 
 export class Grid {
   constructor(rows, cols) {
+    this.setSize(rows, cols);
+  }
+
+  setSize(rows, cols) {
     this.rows = rows;
     this.cols = cols;
     this.cells = [];

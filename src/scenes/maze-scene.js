@@ -1,5 +1,4 @@
 import 'phaser'
-// import { Grid } from '../grid';
 import { RecursiveBacktracker } from '../generators/recursive-backtracker';
 import { GridView } from '../entities/grid-view';
 import { Grid } from '../models/grid';
@@ -29,5 +28,14 @@ export class MazeScene extends Phaser.Scene {
       .on('pointerdown', () => {
         generator.reset();
       });
+
+    this.add.text(250, 450, 'randomize size')
+      .setInteractive()
+      .on('pointerdown', () => {
+        const rows = Phaser.Math.RND.between(2, 10);
+        const cols = Phaser.Math.RND.between(2, 10);
+        grid.setSize(rows, cols);
+        gridView.refresh();
+      })
   }
 }

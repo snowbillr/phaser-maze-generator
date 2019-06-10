@@ -8,10 +8,13 @@ export class GridView {
     this.scene = scene;
     this.grid = grid;
 
+    this.gridX = x;
+    this.gridY = y;
+
     this.gridWidth = (this.grid.cols * CELL_SIZE) /*+ ((this.grid.cols + 1) * WALL_THICKNESS)*/;
     this.gridHeight = (this.grid.rows * CELL_SIZE) /*+ ((this.grid.rows + 1) * WALL_THICKNESS)*/;
-    const centerX = x - this.gridWidth / 2;
-    const centerY = y - this.gridHeight / 2;
+    const centerX = this.gridX - this.gridWidth / 2;
+    const centerY = this.gridY - this.gridHeight / 2;
 
     this.cellViews = this._buildCellViews(); // key: `${row}${col}`
     this.wallViews = this._buildWallViews(); // key: `${cell1.row}${cell1.col},${cell2.row}${cell2.col}`
@@ -22,6 +25,22 @@ export class GridView {
 
   reset() {
     Object.values(this.wallViews).forEach(wallView => wallView.fillColor = 0x000000);
+  }
+
+  refresh() {
+    this.container.each(child => child.destroy());
+    this.container.destroy();
+
+    this.gridWidth = (this.grid.cols * CELL_SIZE) /*+ ((this.grid.cols + 1) * WALL_THICKNESS)*/;
+    this.gridHeight = (this.grid.rows * CELL_SIZE) /*+ ((this.grid.rows + 1) * WALL_THICKNESS)*/;
+    const centerX = this.gridX - this.gridWidth / 2;
+    const centerY = this.gridY - this.gridHeight / 2;
+
+    this.cellViews = this._buildCellViews(); // key: `${row}${col}`
+    this.wallViews = this._buildWallViews(); // key: `${cell1.row}${cell1.col},${cell2.row}${cell2.col}`
+    this.outlineViews = this._buildOutlineViews(); // []
+
+    this.container = this.scene.add.container(centerX, centerY, [...Object.values(this.cellViews), ...Object.values(this.wallViews), ...this.outlineViews]);
   }
 
   destroyWall(wall) {
