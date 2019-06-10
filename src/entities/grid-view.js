@@ -8,22 +8,14 @@ export class GridView {
     this.scene = scene;
     this.grid = grid;
 
-    this.x = x;
-    this.y = y;
     this.gridWidth = (this.grid.cols * CELL_SIZE) /*+ ((this.grid.cols + 1) * WALL_THICKNESS)*/;
     this.gridHeight = (this.grid.rows * CELL_SIZE) /*+ ((this.grid.rows + 1) * WALL_THICKNESS)*/;
-    const centerX = this.x - this.gridWidth / 2;
-    const centerY = this.y - this.gridHeight / 2;
+    const centerX = x - this.gridWidth / 2;
+    const centerY = y - this.gridHeight / 2;
 
-    // key: `${row}${col}`
-    this.cellViews = {};
-    // key: `${cell1.row}${cell1.col},${cell2.row}${cell2.col}`
-    this.wallViews = {};
-
-    this.outlineViews = [];
-
-    this._buildGrid();
-    this._outlineGrid();
+    this.cellViews = this._buildCellViews(); // key: `${row}${col}`
+    this.wallViews = this._buildWallViews(); // key: `${cell1.row}${cell1.col},${cell2.row}${cell2.col}`
+    this.outlineViews = this._buildOutlineViews(); // []
 
     this.container = scene.add.container(centerX, centerY, [...Object.values(this.cellViews), ...Object.values(this.wallViews), ...this.outlineViews]);
   }
@@ -36,31 +28,41 @@ export class GridView {
     this.wallViews[`${wall.cell1.row}${wall.cell1.col},${wall.cell2.row}${wall.cell2.col}`].fillColor = 0xFFFFFF;
   }
 
-  _buildGrid() {
-    // build cells
+  _buildCellViews() {
+    const cellViews = {};
+
     this.grid.forEachCell(cell => {
       const { x, y } = this._getCellCoordinates(cell);
 
       const cellView = this.scene.add.rectangle(x, y, CELL_SIZE, CELL_SIZE, 0xFFFFFF);
-      this.cellViews[`${cell.row}${cell.col}`] = cellView;
+      cellViews[`${cell.row}${cell.col}`] = cellView;
     });
 
-    // build walls
+    return cellViews;
+  }
+
+  _buildWallViews() {
+    const wallViews = {};
+
     this.grid.forEachWall(wall => {
       const { x, y, width, height } = this._getWallCoordinates(wall);
 
       const wallView = this.scene.add.rectangle(x, y, width, height, 0x000000);
-      this.wallViews[`${wall.cell1.row}${wall.cell1.col},${wall.cell2.row}${wall.cell2.col}`] = wallView;
+      wallViews[`${wall.cell1.row}${wall.cell1.col},${wall.cell2.row}${wall.cell2.col}`] = wallView;
     });
+
+    return wallViews;
   }
 
-  _outlineGrid() {
-    this.outlineViews.push(
+  _buildOutlineViews() {
+    const outlineViews = [
       this.scene.add.rectangle(this.gridWidth / 2, 0, this.gridWidth, WALL_THICKNESS, 0x000000), // top
       this.scene.add.rectangle(this.gridWidth / 2, this.gridHeight, this.gridWidth, WALL_THICKNESS, 0x000000), // bottom
       this.scene.add.rectangle(0, this.gridHeight / 2, WALL_THICKNESS, this.gridHeight, 0x000000), // left
       this.scene.add.rectangle(this.gridWidth, this.gridHeight / 2, WALL_THICKNESS, this.gridHeight, 0x000000), // right
-    );
+    ];
+
+    return outlineViews;
   }
 
   _getCellCoordinates(cell) {
